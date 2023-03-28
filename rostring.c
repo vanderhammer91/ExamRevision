@@ -15,6 +15,8 @@ Expected files   : rostring.c
 Allowed functions: write, malloc, free
 --------------------------------------------------------------------------------
 
+<-------------INCOMPLETE FUNCTION --------------------------->
+
 Write a program that takes a string and displays this string after rotating it
 one word to the left.
 
@@ -47,9 +49,7 @@ $>
 
 */
 #include <unistd.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
+
 
 void ft_putchar(char c)
 {
@@ -60,19 +60,6 @@ int	is_space(char c)
 {
 	if (c == ' ' || c == '\t')
 		return (1);
-	return (0);
-}
-
-size_t get_first_len(char *str)
-{
-	size_t count;
-
-	count = 0;
-	while(!is_space(*str))
-	{
-		str++;
-		count++;
-	}	
 	return (0);
 }
 
