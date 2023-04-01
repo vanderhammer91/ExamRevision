@@ -1,7 +1,7 @@
 TODO.TXT
 
 ft_atoi
-ft_stcmp
+ft_strcmp
 ft_strpbrk
 ft_strrev
 last_word
@@ -9,3 +9,5 @@ print_bits
 reverse_bits
 snake_to_camel
 swap_bits
+union
+wdmatch
