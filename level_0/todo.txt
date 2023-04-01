@@ -2,3 +2,4 @@ NOT IN HERE YET FOR ONE REASON OR ANOTHER:
 
 ft_strlen
 search_and_replace
+repeat_alpha
