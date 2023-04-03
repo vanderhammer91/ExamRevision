@@ -1,7 +1,6 @@
 TODO.TXT
 
-ft_atoi
-ft_strcmp
+
 ft_strpbrk
 ft_strrev
 last_word
