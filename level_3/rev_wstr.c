@@ -1,29 +1,24 @@
-/*
-Assignment name  : rev_wstr
+/*Assignment name  : rev_wstr
 Expected files   : rev_wstr.c
 Allowed functions: write, malloc, free
----------------------------------------------------------------
+--------------------------------------------------------------------------------
 
-Write a program that takes a string as a parameter, and prints
-its words in reverse order.
+Write a program that takes a string as a parameter, and prints its words in 
+reverse order.
 
-A "word" is a part of the string bounded by spaces and/or tabs, 
-or the begin/end of the string.
+A "word" is a part of the string bounded by spaces and/or tabs, or the 
+begin/end of the string.
 
-If the number of parameters is different from 1, the program 
-will display '\n'.
+If the number of parameters is different from 1, the program will display 
+'\n'.
 
-In the parameters that are going to be tested, there won't be 
-any "additional" 
-spaces (meaning that there won't be additionnal spaces at the
- beginning or at 
-the end of the string, and words will always be separated by 
-exactly one space).
+In the parameters that are going to be tested, there won't be any "additional" 
+spaces (meaning that there won't be additionnal spaces at the beginning or at 
+the end of the string, and words will always be separated by exactly one space).
 
 Examples:
 
-$> ./rev_wstr "You hate people! But I love gatherings. Isn't
- it ironic?" | cat -e
+$> ./rev_wstr "You hate people! But I love gatherings. Isn't it ironic?" | cat -e
 ironic? it Isn't gatherings. love I But people! hate You$
 $>./rev_wstr "abcdefghijklm"
 abcdefghijklm
@@ -31,73 +26,68 @@ $> ./rev_wstr "Wingardium Leviosa" | cat -e
 Leviosa Wingardium$
 $> ./rev_wstr | cat -e
 $
-$>
-*/
+$>*/
 #include <unistd.h>
-#include <stdlib.h>
 
 void	ft_putchar(char c)
 {
 	write(1, &c, 1);
 }
 
-int	is_space(char c)
+int ft_strlen(char *str)
+{
+	int count = 0;
+	while (str[count])
+	{
+		count++;
+	}
+	return (count);
+}
+
+int is_space(char c)
 {
 	if (c == ' ' || c == '\t')
 		return (1);
 	return (0);
 }
 
-int ft_strlen(char *str)
+int clearleft(char *str, int index)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
+	int i = 0;
+	while (i < index)
+	{
+		if (!is_space(str[i]))
+			return (0);
 		i++;
-	return (i);
+	}
+	return (1);
 }
-
 void	rev_wstr(char *str)
-{	
-	int i;
+{
+	int i = ft_strlen(str);
 	int j;
 
-	if (!str)
-		return ;
-	while(is_space(*str))
-		str++;
-	i = ft_strlen(str) - 1;
-	while(i >= 0)
+	while(i--)
 	{
-		while(is_space(str[i]) && (i > 0))
-			i--;
-		while (i > 0 && !is_space(str[i]) && !is_space(str[i-1]))
-			i--;
-		if (!is_space(str[i]) && (i > 0))
+		if (!is_space(str[i]) && is_space(str[(i-1)]))
 		{
-			j = 0;
-			while(!is_space(str[i + j]))
+			j = i;
+			while (!is_space(str[j]) && str[j])
 			{
-				ft_putchar(str[i+j]);
+				ft_putchar(str[j]);
 				j++;
-				if ((i + j) > (ft_strlen(str) - 1))
-					break ;
 			}
-			ft_putchar(' ');
-			i--;
+			if (!clearleft(str, i))
+				ft_putchar(' ');
 		}
-		if(!is_space(str[i]) && i == 0)
+		else if (!is_space(str[i]) && i == 0)
 		{
-			j = 0;
-			while (!is_space(str[i + j]))
+			j = i;
+			while (!is_space(str[j]) && str[j])
 			{
-				ft_putchar(str[i+j]);
+				ft_putchar(str[j]);
 				j++;
-				if(i + j > (ft_strlen(str) - 1))
-					break;
 			}
-			i--;
 		}
 	}
 }
