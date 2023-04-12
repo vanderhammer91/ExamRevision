@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   do_op.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ivanderw <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/24 12:54:21 by ivanderw          #+#    #+#             */
-/*   Updated: 2023/03/24 13:16:30 by ivanderw         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 /*
 Assignment name  : do_op
 Expected files   : do_op.c
@@ -40,74 +29,73 @@ $> ./do_op | cat -e
 $
 */
 #include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
 
 void	ft_putchar(char c)
 {
-	write (1, &c, 1);
+	write(1, &c, 1);
 }
 
-void	do_add(char **argv)
+int ft_atoi(char *str)
 {
-	int var1 = atoi(argv[1]);
-	int var2 = atoi(argv[3]);
-	int result = var1 + var2;
-	printf("%d\n", result);
+	int i = 0;
+	int result = 0;
+	int sign = 1;
+
+	while (str[i] == ' ' || str[i] == '\t')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -sign;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = (result * 10) + (str[i] - '0');
+		i++;
+	}
+	return (result * sign);
+	ft_putchar('t');
 }
 
-void	do_sub(char **argv)
+void	ft_putnbr(int n)
 {
-	int var1 = atoi(argv[1]);
-	int var2 = atoi(argv[3]);
-	int result = var1 - var2;
-	printf("%d\n", result);
+	if (n < 0)
+	{
+		ft_putchar('-');
+		ft_putnbr(-n);
+	}
+	else if (n < 10)
+		ft_putchar(n + '0');
+	else if (n >= 10)
+	{
+		ft_putnbr(n / 10);
+		ft_putchar(n % 10 + '0');
+	}
 }
 
-void	do_mult(char **argv)
+void	do_op(int var1, char op, int var2)
 {
-	int var1 = atoi(argv[1]);
-	int var2 = atoi(argv[3]);
-	int result = var1 * var2;
-	printf("%d\n", result);
+	int result = 0;
+	if (op == '+')
+		result = (var1 + var2);
+	if (op == '-')
+		result = (var1 - var2);
+	if (op == '*')
+		result = (var1 * var2);
+	if (op == '/')
+		result = (var1 / var2);
+	if (op == '%')
+		result = (var1 % var2);
+	ft_putnbr(result);
 }
 
-void	do_div(char **argv)
-{
-	int var1 = atoi(argv[1]);
-	int var2 = atoi(argv[3]);
-	int result = var1 / var2;
-	printf("%d\n", result);
-}
-
-void	do_mod(char **argv)
-{
-	int var1 = atoi(argv[1]);
-	int var2 = atoi(argv[3]);
-	int result = var1 % var2;
-	printf("%d\n", result);
-}
-
-void	do_op(char **argv)
-{
-	if (argv[2][0] == '+')
-		do_add(argv);
-	if (argv[2][0] == '-')
-		do_sub(argv);
-	if (argv[2][0] == '*')
-		do_mult(argv);
-	if (argv[2][0] == '/')
-		do_div(argv);
-	if (argv[2][0] == '%')
-		do_mod(argv);
-}
-
-int	main(int argc, char ** argv)
+int	main(int argc, char **argv)
 {
 	if (argc != 1)
-		do_op(argv);
-	else
-		ft_putchar('\n');
-
+		do_op(ft_atoi(argv[1]), argv[2][0], ft_atoi(argv[3]));
+	ft_putchar('\n');
 	return (0);
 }
+
