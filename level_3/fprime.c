@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   fprime.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ivanderw <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/26 19:38:12 by ivanderw          #+#    #+#             */
-/*   Updated: 2023/03/26 20:45:48 by ivanderw         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-/*
-Assignment name  : fprime
+/*Assignment name  : fprime
 Expected files   : fprime.c
 Allowed functions: printf, atoi
 --------------------------------------------------------------------------------
@@ -42,105 +30,100 @@ $> ./fprime 1 | cat -e
 $> ./fprime | cat -e
 $
 $> ./fprime 42 21 | cat -e
-$
-*/
+$	*/
 #include <unistd.h>
-#include <stdlib.h>
 
 void	ft_putchar(char c)
 {
-	write(1, &c, 1);
+	write (1, &c, 1);
 }
 
-int is_prime(int n)
+int	ft_atoi(char *str)
 {
-	int i;
+	int result = 0;
+	int sign = 1;
 
-	if(n <= 1)
-		return (0);
-	else if(n == 2)
-		return (1);
-	else
+	while (*str == ' ' || *str == '\t')
+		str++;
+	if(*str == '-' || *str == '+')
 	{
-		i = 2;
-		while (i < n)
-		{
-			if (n % i == 0)
-				return (0);
-			i++;
-		}
+		if (*str == '-')
+			sign = - sign;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		result = (result * 10) + (*str - '0');
+		str++;
+	}
+	return (result * sign);
+}
+
+int ft_isprime(int n)
+{
+	int i = 2;
+	while (i <= (n / 2))
+	{
+		if (n % i == 0)
+			return (0);
+		i++;
 	}
 	return (1);
 }
 
 void	ft_putnbr(int n)
 {
-	char put;
-	
-	if(n == 0)
+	if (n < 0)
 	{
-		ft_putchar('0');
+		ft_putchar('-');
+		ft_putnbr(-n);
 	}
 	else if (n < 10)
 	{
-		put = n + '0';
-		ft_putchar(put);
+		ft_putchar(n + '0');
 	}
-	else
+	else if (n >= 10)
 	{
-		ft_putnbr (n/10);
-		put = n % 10 + '0';
-		ft_putchar(put);
+		ft_putnbr(n / 10);
+		ft_putchar((n % 10) + '0');
 	}
 }
 
 void	fprime(int n)
 {
-	int i;
-	int writ;
-	int init;
 
-	init = n;
-	if (n < 1)
+	if(n == 1)
+	{
+		ft_putchar('0');
 		return ;
-	if (n == 1 || n == 2)
+	}
+	else if (n == 2)
 	{
 		ft_putchar('1');
 		return ;
 	}
-	i = 2;
-	writ = 0;	
-	while(i < n)
+	int i = 2;
+	while (i <= n / 2)
 	{
-		if(is_prime(i))
+		if (ft_isprime(i) && n % i == 0)
 		{
-			if (n % i == 0)
-			{
-				while (n % i == 0)
-				{
-					n = n / i;
-					ft_putnbr(i);
-					ft_putchar('*');
-					writ = 1;
-				}
-			}
+			n = n / i;
+			ft_putnbr(i);
+			ft_putchar('*');
 		}
-		i++;
+		else
+			i++;
 	}
-	if(writ == 1)
-	{
-		ft_putnbr(n);
-	}
-	else if (is_prime(init))
-		ft_putnbr(init);
+	ft_putnbr(n);
 }
 
 int	main(int argc, char **argv)
 {
-	(void)argv;
 	if (argc == 2)
 	{
-		fprime(atoi(argv[1]));	
+		int result = ft_atoi(argv[1]);
+		if (result > 0)
+			fprime(result);
 	}
 	ft_putchar('\n');
 	return (0);
