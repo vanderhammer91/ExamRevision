@@ -1,5 +1,4 @@
-/*
-Assignment name  : rostring
+/*Assignment name  : rostring
 Expected files   : rostring.c
 Allowed functions: write, malloc, free
 --------------------------------------------------------------------------------
@@ -38,53 +37,53 @@ $>
 
 void	ft_putchar(char c)
 {
-	write (1, &c, 1);
+	write(1, &c, 1);
 }
 
 int	is_space(char c)
 {
-	if (c == ' ' || c == '\t')
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
 		return (1);
 	return (0);
 }
 
 void	rostring(char *str)
 {
-	int	first_len = 0;
-	int	i = 0;
-	int printed;
-
-	while(str[i])
+	int i = 0;
+	int first_len = 0;
+	int	first_index;
+	while (str[i])
 	{
-		while(is_space(str[i]))
-			i++;
-		if (!is_space(str[i]) && first_len == 0)
+		if (first_len == 0)
 		{
-			while(!is_space(str[i]) && str[i])
+			if ((!is_space(str[i]) && is_space(str[i-1])) || (!is_space(str[i]) && (i == 0)))
 			{
-				first_len++;
-				i++;
+				first_index = i;
+				while (str[i] && !is_space(str[i]))
+				{
+					i++;
+					first_len++;
+				}
 			}
 		}
-		else if(!is_space(str[i]))
+		else
 		{
-			printed = 0;
-			while(!is_space(str[i]) && str[i])
+			if (!is_space(str[i]) && is_space(str[(i-1)]))
 			{
-				printed = 1;
-				ft_putchar(str[i]);
-				i++;
-			}
-			if(printed)
+				while (str[i] && !is_space(str[i]))
+				{
+					ft_putchar(str[i]);
+					i++;
+				}
 				ft_putchar(' ');
+			}
 		}
+		i++;
 	}
 	i = 0;
-	while(is_space(str[i]))
-		i++;
-	while(first_len--)
+	while (first_len--)
 	{
-		ft_putchar(str[i]);
+		ft_putchar(str[first_index + i]);
 		i++;
 	}
 }
