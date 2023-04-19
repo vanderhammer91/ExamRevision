@@ -1,5 +1,4 @@
-/*
-Assignment name  : ft_split
+/*Assignment name  : ft_split
 Expected files   : ft_split.c
 Allowed functions: malloc
 --------------------------------------------------------------------------------
@@ -11,94 +10,61 @@ A "word" is defined as a part of a string delimited either by spaces/tabs/new
 lines, or by the start/end of the string.
 
 Your function must be declared as follows:
-
-char    **ft_split(char *str);
 */
-
-#include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-size_t	ft_strlen(char *str)
+int is_space(char c)
 {
-	size_t len = 0;
-	while (*str)
-	{
-		len++;
-		str++;
-	}
-	return (len);
-}
-
-int	is_space(char c)
-{
-	if (c == ' ' || c == '\t')
+	if (c == ' ' || c == '\t' || c == '\n')
 		return (1);
 	return (0);
 }
 
-size_t	get_word_count(char	*str)
+int get_wordcount(char *str)
 {
-	size_t	i = 0;
-	size_t	word_count = 0;
-
+	int count = 0;
+	int i = 0;
 	while (str[i])
 	{
-		if (i == 0 && !is_space(str[i]))
-		{
-			word_count++;
-			i++;
-		}
-		else if (i >= 1 && !is_space(str[i]) && is_space(str[(i - 1)]))
-		{
-			word_count++;
-			i++;
-		}
-		else
-		{
-			i++;
-		}
+		if (!is_space(str[i]) && i == 0)
+			count++;
+		if (!is_space(str[i]) && is_space(str[(i-1)]))
+			count++;
+		i++;
 	}
-	return (word_count);
+	return (count);
 }
 
-char	*ft_strndup(char *str, int n)
+char	*ft_strndup(char *str, int len)
 {
-	char	*mystr;
-	int		i;
-
-	mystr = malloc(sizeof(char) * (n + 1));
-	if (!mystr)
-		return (NULL);
-	i = 0;
-	while (str[i] && i < n)
+	char *out = (char *)malloc(sizeof(char) * (len + 1));
+	int i = 0;
+	while (str[i] && i < len)
 	{
-		mystr[i] = str[i];
+		out[i] = str[i];
 		i++;
 	}
-	while (i <= n)
+	while(i <= len)
 	{
-		mystr[i] = 0;
+		out[i] = 0;
 		i++;
 	}
-	return (mystr);
+	return (out);
 }
 
 
-char	**ft_split(char *str)
+char    **ft_split(char *str)
 {
-	char	**split;
-	size_t	i;
-	size_t	j;
-	size_t	word_count;
-
+	char **split;
 	if (!str)
 		return (NULL);
-	word_count = get_word_count(str);
-	split = malloc(sizeof(char *) * (word_count + 1));
+	int word_count = get_wordcount(str); 
+	split = (char **)malloc(sizeof(char *) * (word_count + 1));
 	if (!split)
 		return (NULL);
-	i = 0;
+	int i = 0;
+	int j = 0;
 	while (i < word_count)
 	{
 		while(is_space(str[j]))
@@ -106,7 +72,7 @@ char	**ft_split(char *str)
 		str = &str[j];
 		j = 0;
 		while(str[j] && !is_space(str[j]))
-			j++;
+			j++;	
 		split[i] = ft_strndup(str, j);
 		i++;
 	}
@@ -117,16 +83,18 @@ char	**ft_split(char *str)
 /*
 int	main(void)
 {
-	char mystr[] = "three words apart";
-	char **my_spl;
-	//printf("%zu \n", get_word_count(mystr));
+	char *mystring = "this is a test. testing! six!  3";
+	int result1 = get_wordcount(mystring);
+	printf("word count is: %d\n", result1);
 
-	my_spl = ft_split(mystr);
-
-	printf("first: %s \n", my_spl[0]);
-	printf("second: %s \n", my_spl[1]);
-	printf("third: %s \n", my_spl[2]);
-
+	char **my_split = ft_split(mystring);
+	
+	//printf("%s\n", my_split[0]);
+	int i = 0;
+	while(my_split[i])
+	{
+		printf("string %d: %s\n", i, my_split[i]);
+		i++;
+	}
 	return (0);
-}
-*/
+}*/
